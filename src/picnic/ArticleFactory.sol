@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity =0.8.9;
+pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "openzeppelin-contracts/access/AccessControl.sol";
 
 import "./interfaces/AbstractERC1155.sol";
 
@@ -81,7 +81,7 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
         });
 
         authorToArticles[_author].push(_tokenId);
-        
+
         emit ArticleCreated(
             _uid,
             _tokenId,

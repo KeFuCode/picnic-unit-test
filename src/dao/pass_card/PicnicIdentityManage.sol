@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.8.7;
+pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "openzeppelin-contracts/utils/Strings.sol";
+import "openzeppelin-contracts/access/AccessControl.sol";
 
 import "./AbstractERC1155Factory.sol";
 
@@ -26,8 +26,8 @@ contract PicnicIdentityManage is AbstractERC1155Factory, AccessControl {
     event MintedBatch(
         address indexed operator,
         address indexed to,
-        uint256[] indexed ids,
-        uint256[] indexed amounts
+        uint256[] ids,
+        uint256[] amounts
     );
 
     constructor(

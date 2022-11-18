@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity =0.8.9;
+pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-contracts/access/Ownable.sol";
+import "openzeppelin-contracts/access/AccessControl.sol";
 
 contract LP is ERC20, Ownable, AccessControl {
     bytes32 public constant SALES_ROLE = keccak256("SALES_ROLE");
@@ -12,7 +12,11 @@ contract LP is ERC20, Ownable, AccessControl {
     event IncreaseLP(address indexed account, uint indexed amount);
     event DecreaseLP(address indexed account, uint indexed amount);
 
-    constructor(address _sales, address _pool, address _admin) ERC20("LP Token", "LP") {
+    constructor(
+        address _sales,
+        address _pool,
+        address _admin
+    ) ERC20("LP Token", "LP") {
         _grantRole(SALES_ROLE, _sales);
         _grantRole(POOL_ROLE, _pool);
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);

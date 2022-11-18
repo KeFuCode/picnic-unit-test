@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity =0.8.9;
+pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "openzeppelin-contracts/token/ERC20/IERC20.sol";
+import "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
+import "openzeppelin-contracts/access/Ownable.sol";
 
 import "./interfaces/ILP.sol";
 
@@ -23,7 +23,10 @@ contract Pool is Ownable {
     }
 
     function withdrawFunds(uint _amount) external {
-        require(ILP(LP).balanceOf(msg.sender) >= _amount, "Must have enough LP Token.");
+        require(
+            ILP(LP).balanceOf(msg.sender) >= _amount,
+            "Must have enough LP Token."
+        );
         ILP(LP).burnLP(msg.sender, _amount);
         _sendFunds(msg.sender, _amount);
     }
@@ -39,11 +42,11 @@ contract Pool is Ownable {
     // ============ Private Methods ============
 
     function _sendFunds(address _receiver, uint256 _amount) private {
-        require(IERC20(TokenAddress).balanceOf(address(this)) >= _amount, 'Insufficient balance to send');
-        IERC20(TokenAddress).safeTransfer(
-            _receiver,
-            _amount
+        require(
+            IERC20(TokenAddress).balanceOf(address(this)) >= _amount,
+            "Insufficient balance to send"
         );
+        IERC20(TokenAddress).safeTransfer(_receiver, _amount);
     }
 
     // ============ View Methods ============
