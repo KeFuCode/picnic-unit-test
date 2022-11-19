@@ -14,11 +14,6 @@ contract PicnicPoint is ERC20, Ownable {
     // Picnic Point, PP
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
-    // temporary test function: The deploy version will be deleted.
-    function testMint(uint256 amount) external {
-        _mint(msg.sender, amount);
-    }
-
     function sendToken(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
         emit Minted(msg.sender, to, amount);
@@ -29,7 +24,7 @@ contract PicnicPoint is ERC20, Ownable {
         address to,
         uint256 amount
     ) internal override {
-        require(from == address(0), "Err: token transfer is BLOCKED");
+        require(from == address(0), "Error: Token transfer is BLOCKED");
         super._beforeTokenTransfer(from, to, amount);
     }
 }

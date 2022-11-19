@@ -10,7 +10,7 @@ import "./AbstractERC1155Factory.sol";
  * @title ERC1155 token for Picnic cards
  * @author kk-0xCreatorDao
  */
-contract PicnicIdentityManage is AbstractERC1155Factory, AccessControl {
+contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
     bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
 
     address[] private executors;
