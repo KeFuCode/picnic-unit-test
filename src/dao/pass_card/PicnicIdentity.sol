@@ -2,7 +2,6 @@
 pragma solidity ^0.8.7;
 
 import "openzeppelin-contracts/utils/Strings.sol";
-import "openzeppelin-contracts/access/AccessControl.sol";
 
 import "./AbstractERC1155Factory.sol";
 
@@ -10,13 +9,8 @@ import "./AbstractERC1155Factory.sol";
  * @title ERC1155 token for Picnic cards
  * @author kk-0xCreatorDao
  */
-contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
-    bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
-
-    address[] private executors;
-    mapping(address => bool) public isExecutor;
-    mapping(address => uint) private executorIndex;
-
+contract PicnicIdentity is AbstractERC1155Factory {
+    
     event Minted(
         address indexed operator,
         address indexed to,
@@ -40,65 +34,7 @@ contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
         symbol_ = symbol;
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
-
-        executors.push(address(0));
     }
-
-    // temporary test function: The deploy version will be deleted.
-    function testMint(uint256 id, uint256 amount) external {
-        _mint(msg.sender, id, amount, "");
-    }
-
-    // =================== executor ===================
-
-    function setExecutor(address account) external onlyOwner {
-        require(
-            isExecutor[account] == false,
-            "The account is already the executor."
-        );
-
-        _addExecutor(account);
-        grantRole(EXECUTOR_ROLE, account);
-    }
-
-    function revokeExecutor(address account) external onlyOwner {
-        require(
-            isExecutor[account] == true,
-            "The account is not the executor."
-        );
-
-        _deleteExecutor(account);
-        revokeRole(EXECUTOR_ROLE, account);
-    }
-
-    function getExecutors() external view returns (address[] memory) {
-        return executors;
-    }
-
-    function _addExecutor(address account) private {
-        isExecutor[account] = true;
-        if (_checkExecutor(account)) {
-            executors[executorIndex[account]] = account;
-        } else {
-            executors.push(account);
-            executorIndex[account] = executors.length - 1;
-        }
-    }
-
-    function _deleteExecutor(address account) private {
-        isExecutor[account] = false;
-        delete executors[executorIndex[account]];
-    }
-
-    function _checkExecutor(address account) private view returns (bool) {
-        if (executorIndex[account] != 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // =================== nft ========================
 
     function sendIdentity(
         address to,
@@ -122,7 +58,7 @@ contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
         address account,
         uint256 id,
         uint256 value
-    ) public virtual override onlyOwner {
+    ) public virtual override onlyRole(DEFAULT_ADMIN_ROLE) {
         _burn(account, id, value);
     }
 
@@ -130,7 +66,7 @@ contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
         address account,
         uint256[] memory ids,
         uint256[] memory values
-    ) public virtual override onlyOwner {
+    ) public virtual override onlyRole(DEFAULT_ADMIN_ROLE) {
         _burnBatch(account, ids, values);
     }
 
@@ -143,15 +79,5 @@ contract PicnicIdentity is AbstractERC1155Factory, AccessControl {
         require(exists(id), "URI: nonexistent token");
 
         return string(abi.encodePacked(super.uri(id), Strings.toString(id)));
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC1155, AccessControl)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
     }
 }

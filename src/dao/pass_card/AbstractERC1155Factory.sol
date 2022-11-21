@@ -2,29 +2,21 @@
 
 pragma solidity ^0.8.7;
 
-import "openzeppelin-contracts/access/Ownable.sol";
+import "openzeppelin-contracts/access/AccessControl.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import "openzeppelin-contracts/security/Pausable.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
 abstract contract AbstractERC1155Factory is
-    Pausable,
+    AccessControl,
     ERC1155Supply,
-    ERC1155Burnable,
-    Ownable
+    ERC1155Burnable
 {
-    string name_;
-    string symbol_;
+    bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
 
-    function pause() external onlyOwner {
-        _pause();
-    }
+    string internal name_;
+    string internal symbol_;
 
-    function unpause() external onlyOwner {
-        _unpause();
-    }
-
-    function setURI(string memory baseURI) external onlyOwner {
+    function setURI(string memory baseURI) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _setURI(baseURI);
     }
 
@@ -47,5 +39,18 @@ abstract contract AbstractERC1155Factory is
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 
         require(from == address(0), "Picnic identity is not transferable");
+        for (uint256 i = 0; i < ids.length; i++) {
+            require(ids[i] != 0, "Token id can not be zero");
+        }
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC1155, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }
