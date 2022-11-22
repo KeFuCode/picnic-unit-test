@@ -18,7 +18,7 @@ contract Sales is Ownable {
     // ============ Structs ============
     struct Article {
         address author;
-        uint price;
+        uint256 price;
         uint32 authorBPS;
         uint32 sharerBPS;
     }
@@ -36,17 +36,17 @@ contract Sales is Ownable {
     address public TokenAddress;
     address payable public Pool;
 
-    mapping(uint => Article) public articles;
+    mapping(uint256 => Article) public articles;
 
     Counters.Counter private atTokenId;
 
     // ============ Events ============
 
     event ArticlePurchased(
-        uint indexed tokenId,
+        uint256 indexed tokenId,
         address indexed buyer,
         address indexed sharer,
-        uint amount
+        uint256 amount
     );
 
     // ============ Modifiers ==========
@@ -90,7 +90,7 @@ contract Sales is Ownable {
 
     function createArticlePublic(
         bytes20 _uid,
-        uint _price,
+        uint256 _price,
         uint32 _quantity,
         uint32 _sharerBPS
     ) external publicCreate {
@@ -118,7 +118,7 @@ contract Sales is Ownable {
 
     function createArticleWhiteList(
         bytes20 _uid,
-        uint _price,
+        uint256 _price,
         uint32 _quantity,
         uint32 _sharerBPS,
         bytes32[] calldata merkleProof
@@ -150,8 +150,8 @@ contract Sales is Ownable {
     }
 
     function buyArticle(
-        uint _tokenId,
-        uint _amount,
+        uint256 _tokenId,
+        uint256 _amount,
         address _sharer
     ) external {
         require(
@@ -167,10 +167,11 @@ contract Sales is Ownable {
 
         IArticleFactory(ArticleFactory).mint(msg.sender, _tokenId, _amount);
 
-        (uint platAmount, uint authorAmount, uint sharerAmount) = _split(
-            _tokenId,
-            _sharer
-        );
+        (
+            uint256 platAmount,
+            uint256 authorAmount,
+            uint256 sharerAmount
+        ) = _split(_tokenId, _sharer);
 
         _mintLP(
             _tokenId,
@@ -222,11 +223,11 @@ contract Sales is Ownable {
     // ============ Private Methods ============
 
     function _mintLP(
-        uint _tokenId,
+        uint256 _tokenId,
         address _sharer,
-        uint _platAmount,
-        uint _authorAmount,
-        uint _sharerAmount
+        uint256 _platAmount,
+        uint256 _authorAmount,
+        uint256 _sharerAmount
     ) private {
         ILP(LP).sendLP(Platform, _platAmount);
         ILP(LP).sendLP(articles[_tokenId].author, _authorAmount);
@@ -237,24 +238,24 @@ contract Sales is Ownable {
 
     // ============ View Methods ============
 
-    function _split(uint _articleId, address _sharer)
+    function _split(uint256 _articleId, address _sharer)
         internal
         view
         returns (
-            uint,
-            uint,
-            uint
+            uint256,
+            uint256,
+            uint256
         )
     {
-        uint platAmount = (articles[_articleId].price * platBPS) / 10000;
+        uint256 platAmount = (articles[_articleId].price * platBPS) / 10000;
 
         if (_sharer == address(0x00)) {
-            uint authorAmount = articles[_articleId].price - platAmount;
+            uint256 authorAmount = articles[_articleId].price - platAmount;
             return (platAmount, authorAmount, 0);
         } else {
-            uint sharerAmount = (articles[_articleId].price *
+            uint256 sharerAmount = (articles[_articleId].price *
                 articles[_articleId].sharerBPS) / 10000;
-            uint authorAmount = articles[_articleId].price -
+            uint256 authorAmount = articles[_articleId].price -
                 platAmount -
                 sharerAmount;
             return (platAmount, authorAmount, sharerAmount);

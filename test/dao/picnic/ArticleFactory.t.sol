@@ -60,9 +60,9 @@ contract ArticleFactoryTest is Test {
         testGrantSalesRole();
 
         bytes20 uid = bytes20(address(1));
-        uint tokenId = 1;
+        uint256 tokenId = 1;
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -81,9 +81,9 @@ contract ArticleFactoryTest is Test {
 
     function testFailCreateArticleNoSalesRole() public {
         bytes20 uid = bytes20(address(1));
-        uint tokenId = 1;
+        uint256 tokenId = 1;
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -108,7 +108,7 @@ contract ArticleFactoryTest is Test {
 
         af.mint(address(2), 1, 10);
         assertEq(af.balanceOf(address(2), 1), 10);
-        
+
         af.mint(address(2), 1, 15);
         assertEq(af.balanceOf(address(2), 1), 25);
 
@@ -136,11 +136,11 @@ contract ArticleFactoryTest is Test {
 
         af.mint(address(2), 1, 10);
         assertEq(af.balanceOf(address(2), 1), 10);
-        
+
         af.mint(address(2), 1, 15);
         assertEq(af.balanceOf(address(2), 1), 50);
 
-        vm.stopPrank(); 
+        vm.stopPrank();
     }
 
     function testFailMintBySalesRoleZeroAmount() public {
@@ -154,17 +154,17 @@ contract ArticleFactoryTest is Test {
     function testMintBatchBySalesRole() public {
         testGrantSalesRole();
 
-        uint[] memory ids = new uint[](3);
+        uint256[] memory ids = new uint256[](3);
         ids[0] = 1;
         ids[1] = 2;
         ids[2] = 3;
-        uint[] memory amounts = new uint[](3);
+        uint256[] memory amounts = new uint256[](3);
         amounts[0] = 11;
         amounts[1] = 22;
         amounts[2] = 33;
         bytes20 uid = bytes20(address(1));
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -202,16 +202,25 @@ contract ArticleFactoryTest is Test {
         accounts[0] = address(2);
         accounts[1] = address(2);
         accounts[2] = address(2);
-        uint[] memory balances = new uint[](3);
+        uint256[] memory balances = new uint256[](3);
         balances[0] = 11;
         balances[1] = 22;
         balances[2] = 33;
 
         af.mintBatch(address(2), ids, amounts);
         assertEq(af.balanceOfBatch(accounts, ids), balances);
-        assertEq(af.uri(ids[0]), "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1");
-        assertEq(af.uri(ids[1]), "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2");
-        assertEq(af.uri(ids[2]), "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/3");
+        assertEq(
+            af.uri(ids[0]),
+            "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"
+        );
+        assertEq(
+            af.uri(ids[1]),
+            "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2"
+        );
+        assertEq(
+            af.uri(ids[2]),
+            "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/3"
+        );
 
         vm.stopPrank();
     }
@@ -219,17 +228,17 @@ contract ArticleFactoryTest is Test {
     function testFailMintBatchNoSalesRole() public {
         testGrantSalesRole();
 
-        uint[] memory ids = new uint[](3);
+        uint256[] memory ids = new uint256[](3);
         ids[0] = 1;
         ids[1] = 2;
         ids[2] = 3;
-        uint[] memory amounts = new uint[](3);
+        uint256[] memory amounts = new uint256[](3);
         amounts[0] = 11;
         amounts[1] = 22;
         amounts[2] = 33;
         bytes20 uid = bytes20(address(1));
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -268,7 +277,7 @@ contract ArticleFactoryTest is Test {
         accounts[0] = address(2);
         accounts[1] = address(2);
         accounts[2] = address(2);
-        uint[] memory balances = new uint[](3);
+        uint256[] memory balances = new uint256[](3);
         balances[0] = 11;
         balances[1] = 22;
         balances[2] = 33;
@@ -279,18 +288,18 @@ contract ArticleFactoryTest is Test {
     function testFailMintBatchBySalesRoleNoTokenId() public {
         testGrantSalesRole();
 
-        uint[] memory ids = new uint[](3);
+        uint256[] memory ids = new uint256[](3);
         ids[0] = 1;
         ids[1] = 2;
         ids[2] = 3;
-        uint[] memory amounts = new uint[](3);
+        uint256[] memory amounts = new uint256[](3);
         amounts[0] = 11;
         amounts[1] = 22;
         amounts[2] = 33;
         bytes20 uid = bytes20(address(1));
         address author = address(1);
-        uint price = 1e7;
-        uint tokenId = 4;
+        uint256 price = 1e7;
+        uint256 tokenId = 4;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -328,7 +337,7 @@ contract ArticleFactoryTest is Test {
         accounts[0] = address(2);
         accounts[1] = address(2);
         accounts[2] = address(2);
-        uint[] memory balances = new uint[](3);
+        uint256[] memory balances = new uint256[](3);
         balances[0] = 11;
         balances[1] = 22;
         balances[2] = 33;
@@ -341,17 +350,17 @@ contract ArticleFactoryTest is Test {
     function testFailMintBatchBySalesRoleOverAmount() public {
         testGrantSalesRole();
 
-        uint[] memory ids = new uint[](3);
+        uint256[] memory ids = new uint256[](3);
         ids[0] = 1;
         ids[1] = 2;
         ids[2] = 3;
-        uint[] memory amounts = new uint[](3);
+        uint256[] memory amounts = new uint256[](3);
         amounts[0] = 11;
         amounts[1] = 22;
         amounts[2] = 33;
         bytes20 uid = bytes20(address(1));
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -389,14 +398,14 @@ contract ArticleFactoryTest is Test {
         accounts[0] = address(2);
         accounts[1] = address(2);
         accounts[2] = address(2);
-        uint[] memory balances = new uint[](3);
+        uint256[] memory balances = new uint256[](3);
         balances[0] = 11;
         balances[1] = 22;
         balances[2] = 33;
 
         af.mintBatch(address(2), ids, amounts);
         assertEq(af.balanceOfBatch(accounts, ids), balances);
-        
+
         af.mintBatch(address(2), ids, amounts);
 
         vm.stopPrank();
@@ -405,17 +414,17 @@ contract ArticleFactoryTest is Test {
     function testFailMintBatchBySalesRoleZeroAmount() public {
         testGrantSalesRole();
 
-        uint[] memory ids = new uint[](3);
+        uint256[] memory ids = new uint256[](3);
         ids[0] = 1;
         ids[1] = 2;
         ids[2] = 3;
-        uint[] memory amounts = new uint[](3);
+        uint256[] memory amounts = new uint256[](3);
         amounts[0] = 11;
         amounts[1] = 22;
         amounts[2] = 33;
         bytes20 uid = bytes20(address(1));
         address author = address(1);
-        uint price = 1e7;
+        uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 authorBPS = 8000;
         uint32 shareBPS = 1000;
@@ -453,14 +462,14 @@ contract ArticleFactoryTest is Test {
         accounts[0] = address(2);
         accounts[1] = address(2);
         accounts[2] = address(2);
-        uint[] memory balances = new uint[](3);
+        uint256[] memory balances = new uint256[](3);
         balances[0] = 11;
         balances[1] = 22;
         balances[2] = 33;
 
         amounts[2] = 0;
         af.mintBatch(address(2), ids, amounts);
-        
+
         vm.stopPrank();
     }
 }
