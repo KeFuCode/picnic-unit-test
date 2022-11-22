@@ -47,8 +47,8 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
 
     event ArticleMintedBatch(
         address indexed buyer,
-        uint[] indexed tokenIds,
-        uint[] indexed amounts
+        uint[] tokenIds,
+        uint[] amounts
     );
 
     // ============ Methods ============
@@ -125,7 +125,6 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
     ) public onlyRole(SALES_ROLE) {
         for (uint i = 0; i < ids.length; i++) {
             require(articles[ids[i]].numMax > 0, "Article does not exist");
-            // Check that there are still tokens available to purchase.
             require(
                 articles[ids[i]].numSold < articles[ids[i]].numMax,
                 "This Article is already sold out."
