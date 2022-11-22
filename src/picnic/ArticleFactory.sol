@@ -101,7 +101,6 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
         // Check that the Article exists. Note: this is redundant
         // with the next check, but it is useful for clearer error messaging.
         require(articles[id].numMax > 0, "Article does not exist");
-        // Check that there are still tokens available to purchase.
         require(
             articles[id].numSold < articles[id].numMax,
             "This Article is already sold out."

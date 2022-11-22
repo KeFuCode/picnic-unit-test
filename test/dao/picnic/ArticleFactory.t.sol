@@ -55,26 +55,84 @@ contract ArticleFactoryTest is Test {
         vm.stopPrank();
     }
 
-    // test create
+    // test create article
     function testCreateArticleBySalesRole() public {
         testGrantSalesRole();
 
+        bytes20 uid = bytes20(address(1));
+        uint tokenId = 1;
+        address author = address(1);
         uint price = 1e7;
+        uint32 numMax = 50;
+        uint32 authorBPS = 8000;
+        uint32 shareBPS = 1000;
+
+        vm.prank(address(1));
+        af.createArticle(
+            uid,
+            tokenId,
+            author,
+            price,
+            numMax,
+            authorBPS,
+            shareBPS
+        );
+    }
+
+    function testFailCreateArticleNoSalesRole() public {
+        bytes20 uid = bytes20(address(1));
+        uint tokenId = 1;
+        address author = address(1);
+        uint price = 1e7;
+        uint32 numMax = 50;
+        uint32 authorBPS = 8000;
+        uint32 shareBPS = 1000;
+
+        vm.prank(address(1));
+        af.createArticle(
+            uid,
+            tokenId,
+            author,
+            price,
+            numMax,
+            authorBPS,
+            shareBPS
+        );
+    }
+
+    // test mint
+    function testMintBySalesRole() public {
+        testCreateArticleBySalesRole();
 
         vm.startPrank(address(1));
-        af.createArticle(
-            bytes20(1),
-            1,
-            address(1),
-            price,
-            50,
-            8000,
-            1000
-        );
+
+        af.mint(address(2), 1, 10);
+        assertEq(af.balanceOf(address(2), 1), 10);
+        
+        af.mint(address(2), 1, 15);
+        assertEq(af.balanceOf(address(2), 1), 25);
+
         vm.stopPrank();
     }
 
-    function testFailCreateArticleNoSalesRole() public {}
+    function testFailMintBySalesRoleNoTokenId() public {
+        testCreateArticleBySalesRole();
 
-    // test mint
+        vm.prank(address(1));
+        af.mint(address(2), 0, 10);
+    }
+
+    function testFailMintBySalesRoleBeyondAmount() public {
+        testCreateArticleBySalesRole();
+
+        vm.startPrank(address(1));
+
+        af.mint(address(2), 1, 10);
+        assertEq(af.balanceOf(address(2), 1), 10);
+        
+        af.mint(address(2), 1, 15);
+        assertEq(af.balanceOf(address(2), 1), 50);
+
+        vm.stopPrank(); 
+    }
 }

@@ -4,25 +4,15 @@ pragma solidity ^0.8.7;
 
 import "openzeppelin-contracts/access/Ownable.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import "openzeppelin-contracts/security/Pausable.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
 abstract contract AbstractERC1155 is
-    Pausable,
     ERC1155Supply,
     ERC1155Burnable,
     Ownable
 {
-    string name_;
-    string symbol_;
-
-    function pause() external onlyOwner {
-        _pause();
-    }
-
-    function unpause() external onlyOwner {
-        _unpause();
-    }
+    string internal name_;
+    string internal symbol_;
 
     function setURI(string memory baseURI) external onlyOwner {
         _setURI(baseURI);
@@ -44,6 +34,10 @@ abstract contract AbstractERC1155 is
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual override(ERC1155, ERC1155Supply) {
+        for (uint i = 0; i < amounts.length; i++) {
+            uint amount = amounts[i];
+            require(amount > 0, "Transfer amount must be greater than 0");
+        }
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 }
