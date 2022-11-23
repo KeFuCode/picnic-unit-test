@@ -1,6 +1,8 @@
 pragma solidity ^0.8.7;
 
 import "forge-std/Test.sol";
+import "forge-std/console.sol";
+
 import "../../../src/picnic/ArticleFactory.sol";
 import "../../../src/FakeUSDC.sol";
 
@@ -29,11 +31,17 @@ contract SalesTest is Test {
     }
 
     function setUp() public {
+        baseSetUp();
+
         sales = new Sales(
             platform,
             address(af),
             address(usdc),
             platBPS
         );
+    }
+
+    function testGetBaseInfo() public {
+        assertEq(usdc.balanceOf(address(this)), 1000000000000000);
     }
 }
