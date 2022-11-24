@@ -2,6 +2,7 @@ pragma solidity ^0.8.7;
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
+import "murky/Merkle.sol";
 
 import "../../../src/picnic/ArticleFactory.sol";
 import "../../../src/FakeUSDC.sol";
@@ -21,6 +22,17 @@ contract SalesTest is Test {
     FakeUSDC private usdc;
     Sales private sales;
 
+    Merkle m;
+    bytes32[] private data;
+    bytes32 private root;
+
+    struct Article {
+        address author;
+        uint256 price;
+        uint32 authorBPS;
+        uint32 sharerBPS;
+    }
+
     function baseSetUp() public {
         af = new ArticleFactory(
             "Article Factory",
@@ -32,8 +44,21 @@ contract SalesTest is Test {
         usdc = new FakeUSDC("Fake USDC", "USDC", decimals, usdcTotal);
     }
 
+    function merkleTreeBaseSetUp() public {
+        m = new Merkle();
+
+        data = new bytes32[](4);
+        data[0] = keccak256(abi.encodePacked(address(1)));
+        data[1] = keccak256(abi.encodePacked(address(2)));
+        data[2] = keccak256(abi.encodePacked(address(3)));
+        data[3] = keccak256(abi.encodePacked(address(4)));
+
+        root = m.getRoot(data);
+    }
+
     function setUp() public {
         baseSetUp();
+        merkleTreeBaseSetUp();
 
         sales = new Sales(platform, address(af), address(usdc), platBPS);
     }
@@ -93,23 +118,42 @@ contract SalesTest is Test {
         uint32 shareBPS = 1000;
 
         vm.expectRevert(
-            "AccessControl: account 0xefc56627233b02ea95bae7e19f648d7dcd5bb132 is missing role 0xdeccffc5821b949817830292498e44ccb6097e4b74ff2f2db960723873324def"
+            "AccessControl: account 0xf5a2fe45f4f1308502b1c136b9ef8af136141382 is missing role 0xdeccffc5821b949817830292498e44ccb6097e4b74ff2f2db960723873324def"
         );
         vm.prank(from);
         sales.createArticlePublic(uid, price, numMax, shareBPS);
     }
 
-    function testCreateArticleWhiteList() public {
+    function testSetWhiteListCreate() public {
+        assertEq(sales.isWhiteListCreate(), false);
+        sales.setWhiteListCreate(true);
+        assertEq(sales.isWhiteListCreate(), true);
+    }
 
-        address from = address(0xABCD);
+    function testSetwhiteListMerkleRoot() public {
+        sales.setwhiteListMerkleRoot(root);
+        assertEq(sales.whiteListMerkleRoot(), root);
+    }
+
+    function testCreateArticleWhiteList() public {
+        testSetSalesRole();
+        testSetWhiteListCreate();
+        testSetwhiteListMerkleRoot();
+
+        address from = address(2);
 
         bytes20 uid = bytes20(address(1));
         uint256 price = 1e7;
         uint32 numMax = 50;
         uint32 shareBPS = 1000;
-        bytes32[] memory merkleProof;
+        bytes32[] memory proof = m.getProof(data, 1);
+
+        bool verified = m.verifyProof(root, proof, data[1]);
+        assertTrue(verified);
 
         vm.prank(from);
-        sales.createArticleWhiteList(uid, price, numMax, shareBPS);
+        sales.createArticleWhiteList(uid, price, numMax, shareBPS, proof);
     }
+
+    function testBuyArticle() public {}
 }
