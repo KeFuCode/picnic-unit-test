@@ -41,7 +41,13 @@ contract SalesTest is Test {
         );
     }
 
-    function testGetBaseInfo() public {
+    function testTotalUSDC() public {
         assertEq(usdc.balanceOf(address(this)), 1000000000000000);
+    }
+
+    function testCreateArticlePublic() public {
+        //setUp
+        //execution
+        //assert
     }
 }
