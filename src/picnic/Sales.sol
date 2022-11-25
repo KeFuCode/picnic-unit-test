@@ -11,6 +11,8 @@ import "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IArticleFactory.sol";
 import "./interfaces/ILP.sol";
 
+import "forge-std/console.sol";
+
 contract Sales is Ownable {
     using Counters for Counters.Counter;
     using SafeERC20 for IERC20;
@@ -230,6 +232,8 @@ contract Sales is Ownable {
         uint256 _authorAmount,
         uint256 _sharerAmount
     ) private {
+        require(LP != address(0), "LP contract is not exist");
+
         ILP(LP).sendLP(Platform, _platAmount);
         ILP(LP).sendLP(articles[_tokenId].author, _authorAmount);
         if (_sharerAmount != 0) {

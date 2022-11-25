@@ -13,6 +13,7 @@ import "../../../src/picnic/Sales.sol";
 
 contract SalesTest is Test {
     bytes32 private constant SALES_ROLE = keccak256("SALES_ROLE");
+    bytes32 private constant POOL_ROLE = keccak256("POOL_ROLE");
 
     bytes32 constant PERMIT_TYPEHASH =
         keccak256(
@@ -76,7 +77,13 @@ contract SalesTest is Test {
 
         lp = new LP(address(sales), address(pool), address(this));
 
+        sales.setLP(address(lp));
         pool.setLP(address(lp));
+    }
+
+    function testRoleInLP() public {
+        assertTrue(lp.hasRole(SALES_ROLE, address(sales)));
+        assertTrue(lp.hasRole(POOL_ROLE, address(pool)));
     }
 
     function testCreateArticlePublicNotOpen() public {
@@ -130,7 +137,7 @@ contract SalesTest is Test {
         uint32 shareBPS = 1000;
 
         vm.expectRevert(
-            "AccessControl: account 0xf5a2fe45f4f1308502b1c136b9ef8af136141382 is missing role 0xdeccffc5821b949817830292498e44ccb6097e4b74ff2f2db960723873324def"
+            "AccessControl: account 0x5991a2df15a8f6a256d3ec51e99254cd3fb576a9 is missing role 0xdeccffc5821b949817830292498e44ccb6097e4b74ff2f2db960723873324def"
         );
         vm.prank(from);
         sales.createArticlePublic(uid, price, numMax, shareBPS);
@@ -206,7 +213,20 @@ contract SalesTest is Test {
         assertEq(usdc.balanceOf(owner), usdcTotal);
     }
 
-    function testBuyArticle() public {
+    function testBuyArticleSharer() public {
+        testCreateArticlePublic();
+        
+        testUsdcMint();
+
+        uint256 privateKey = 0xBEEF;
+        address owner = vm.addr(privateKey);
+        testPermit();
+
+        vm.prank(owner);
+        sales.buyArticle(1, 10, address(0xCDDF));
+    }
+
+    function testBuyArticleNoSharer() public {
         testCreateArticlePublic();
         
         testUsdcMint();
