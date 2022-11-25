@@ -126,7 +126,7 @@ contract SalesTest is Test {
         sales.createArticlePublic(uid, price, numMax, shareBPS);
     }
 
-    function testCreateArticlePublicNoSalesRole() public {
+    function testFailCreateArticlePublicNoSalesRole() public {
         testSetPulicCreate();
 
         address from = address(0xABCD);
@@ -136,9 +136,6 @@ contract SalesTest is Test {
         uint32 numMax = 50;
         uint32 shareBPS = 1000;
 
-        vm.expectRevert(
-            "AccessControl: account 0x5991a2df15a8f6a256d3ec51e99254cd3fb576a9 is missing role 0xdeccffc5821b949817830292498e44ccb6097e4b74ff2f2db960723873324def"
-        );
         vm.prank(from);
         sales.createArticlePublic(uid, price, numMax, shareBPS);
     }
