@@ -12,29 +12,29 @@ import "../../../src/picnic/LP.sol";
 import "../../../src/picnic/Sales.sol";
 
 contract SalesTest is Test {
-    bytes32 private constant SALES_ROLE = keccak256("SALES_ROLE");
-    bytes32 private constant POOL_ROLE = keccak256("POOL_ROLE");
+    bytes32 public constant SALES_ROLE = keccak256("SALES_ROLE");
+    bytes32 public constant POOL_ROLE = keccak256("POOL_ROLE");
 
     bytes32 constant PERMIT_TYPEHASH =
         keccak256(
             "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
         );
 
-    address private platform = address(0xABCD);
-    uint32 private platBPS = 1000;
+    address public platform = address(0xABCD);
+    uint32 public platBPS = 1000;
 
     uint8 decimals = 6;
     uint256 usdcTotal = 1e15;
 
-    ArticleFactory private af;
-    FakeUSDC private usdc;
-    Sales private sales;
-    Pool private pool;
-    LP private lp;
+    ArticleFactory public af;
+    FakeUSDC public usdc;
+    Sales public sales;
+    Pool public pool;
+    LP public lp;
 
     Merkle m;
-    bytes32[] private data;
-    bytes32 private root;
+    bytes32[] public data;
+    bytes32 public root;
 
     struct Article {
         address author;
@@ -215,7 +215,7 @@ contract SalesTest is Test {
 
     function testBuyArticleSharer() public {
         testCreateArticlePublic();
-        
+
         testUsdcMint();
 
         uint256 privateKey = 0xBEEF;
@@ -230,7 +230,7 @@ contract SalesTest is Test {
 
     function testBuyArticleNoSharer() public {
         testCreateArticlePublic();
-        
+
         testUsdcMint();
 
         uint256 privateKey = 0xBEEF;
@@ -240,5 +240,14 @@ contract SalesTest is Test {
         vm.prank(owner);
         sales.buyArticle(1, 10, address(0));
         assertEq(lp.balanceOf(address(0xABCD)), 100000000);
+    }
+
+    function testWithdrawFunds() public {
+        testBuyArticleNoSharer();
+
+        assertEq(lp.balanceOf(address(0xABCD)), 100000000);
+        vm.prank(address(0xABCD));
+        pool.withdrawFunds(1e7);
+        assertEq(lp.balanceOf(address(0xABCD)), 90000000);
     }
 }

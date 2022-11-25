@@ -48,10 +48,4 @@ contract Pool is Ownable {
         );
         IERC20(TokenAddress).safeTransfer(_receiver, _amount);
     }
-
-    // ============ View Methods ============
-
-    function getETHBalance() external view returns (uint) {
-        return address(this).balance;
-    }
 }
