@@ -203,7 +203,7 @@ contract Sales is Ownable {
         Pool = payable(_Pool);
     }
 
-    function setPlat(address _platform) external onlyOwner {
+    function setPlatform(address _platform) external onlyOwner {
         Platform = _platform;
     }
 

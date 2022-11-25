@@ -224,6 +224,8 @@ contract SalesTest is Test {
 
         vm.prank(owner);
         sales.buyArticle(1, 10, address(0xCDDF));
+        assertEq(lp.balanceOf(platform), 90000000);
+        assertEq(lp.balanceOf(address(0xCDDF)), 10000000);
     }
 
     function testBuyArticleNoSharer() public {
@@ -237,5 +239,6 @@ contract SalesTest is Test {
 
         vm.prank(owner);
         sales.buyArticle(1, 10, address(0));
+        assertEq(lp.balanceOf(address(0xABCD)), 100000000);
     }
 }
