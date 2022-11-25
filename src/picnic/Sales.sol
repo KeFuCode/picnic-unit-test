@@ -155,9 +155,10 @@ contract Sales is Ownable {
         address _sharer
     ) external {
         require(
-            ArticleFactory != address(0x00),
-            "The ArticleFactory's address does not exist"
+            ArticleFactory != address(0),
+            "The ArticleFactory's address is not exist"
         );
+        require(Pool != address(0), "The Pool's address is not exist");
 
         IERC20(TokenAddress).safeTransferFrom(
             msg.sender,
