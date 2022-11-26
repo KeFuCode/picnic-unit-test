@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.7;
 
-import "openzeppelin-contracts/access/AccessControl.sol";
+import "openzeppelin-contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
+import "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import "./interfaces/AbstractERC1155.sol";
+import "./interfaces/AbstractERC1155Upgradeable.sol";
 
 // This contract is a combination of Mirror.xyz's Articles.sol and Soundxyz's Artist.sol
 
@@ -11,7 +13,12 @@ import "./interfaces/AbstractERC1155.sol";
  * @title ArticleFactory
  * @author kk-0xCreatorDao
  */
-contract ArticleFactory is AbstractERC1155, AccessControl {
+contract ArticleFactoryUpgradeable is
+    Initializable,
+    AbstractERC1155Upgradeable,
+    AccessControlUpgradeable,
+    UUPSUpgradeable
+{
     // ============ Structs ============
     struct Article {
         address author;
@@ -53,12 +60,21 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
 
     // ============ Methods ============
 
-    constructor(
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(
         string memory _name,
         string memory _symbol,
         string memory _uri,
         address _admin
-    ) ERC1155(_uri) {
+    ) public initializer {
+        __ERC1155_init(_uri);
+        __Ownable_init();
+        __AccessControl_init();
+        __UUPSUpgradeable_init();
+
         name_ = _name;
         symbol_ = _symbol;
 
@@ -147,14 +163,20 @@ contract ArticleFactory is AbstractERC1155, AccessControl {
     function uri(uint256 _id) public view override returns (string memory) {
         require(exists(_id), "URI: nonexistent token");
 
-        return string(abi.encodePacked(super.uri(_id), Strings.toString(_id)));
+        return string(abi.encodePacked(super.uri(_id), StringsUpgradeable.toString(_id)));
     }
+
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyOwner
+        override
+    {}
 
     function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
-        override(ERC1155, AccessControl)
+        override(ERC1155Upgradeable, AccessControlUpgradeable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

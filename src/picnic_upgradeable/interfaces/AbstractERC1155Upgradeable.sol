@@ -2,17 +2,23 @@
 
 pragma solidity ^0.8.7;
 
-import "openzeppelin-contracts/access/Ownable.sol";
-import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+import "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "openzeppelin-contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
+import "openzeppelin-contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
 
-abstract contract AbstractERC1155 is
-    ERC1155Supply,
-    ERC1155Burnable,
-    Ownable
+abstract contract AbstractERC1155Upgradeable is
+    ERC1155SupplyUpgradeable,
+    ERC1155BurnableUpgradeable,
+    OwnableUpgradeable
 {
     string internal name_;
     string internal symbol_;
+
+    function __AbstractERC1155_init() internal onlyInitializing {
+    }
+
+    function __AbstractERC1155_init_unchained() internal onlyInitializing {
+    }
 
     function setURI(string memory baseURI) external onlyOwner {
         _setURI(baseURI);
@@ -33,7 +39,7 @@ abstract contract AbstractERC1155 is
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) internal virtual override(ERC1155, ERC1155Supply) {
+    ) internal virtual override(ERC1155Upgradeable, ERC1155SupplyUpgradeable) {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
         for (uint i = 0; i < amounts.length; i++) {
             uint amount = amounts[i];

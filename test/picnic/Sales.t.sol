@@ -4,12 +4,12 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "murky/Merkle.sol";
 
-import "../../../src/picnic/ArticleFactory.sol";
-import "../../../src/FakeUSDC.sol";
-import "../../../src/picnic/Pool.sol";
-import "../../../src/picnic/LP.sol";
+import "../../src/picnic/ArticleFactory.sol";
+import "../../src/FakeUSDC.sol";
+import "../../src/picnic/Pool.sol";
+import "../../src/picnic/LP.sol";
 
-import "../../../src/picnic/Sales.sol";
+import "../../src/picnic/Sales.sol";
 
 contract SalesTest is Test {
     bytes32 public constant SALES_ROLE = keccak256("SALES_ROLE");

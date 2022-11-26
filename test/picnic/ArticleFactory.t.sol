@@ -1,7 +1,7 @@
 pragma solidity ^0.8.7;
 
 import "forge-std/Test.sol";
-import "../../../src/picnic/ArticleFactory.sol";
+import "../../src/picnic/ArticleFactory.sol";
 
 contract ArticleFactoryTest is Test {
     bytes32 private constant SALES_ROLE = keccak256("SALES_ROLE");

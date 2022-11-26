@@ -5,6 +5,8 @@
 - articleFactory
   - mintBatch no use ** 
   - metadata no test in frontend ***
+  - nft can burn ? ***
+  - whether royalty ? how much ? ***
 
 - sales
   - createArticleWhiteList no use *** / **
