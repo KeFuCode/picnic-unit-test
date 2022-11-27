@@ -31,6 +31,7 @@ contract LPUpgradeable is
     ) public initializer {
         __ERC20_init("Picnic Profit", "PP");
         __Ownable_init();
+        __AccessControl_init();
         __UUPSUpgradeable_init();
 
         _grantRole(SALES_ROLE, _sales);

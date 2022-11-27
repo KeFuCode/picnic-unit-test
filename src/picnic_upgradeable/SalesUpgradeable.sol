@@ -174,6 +174,9 @@ contract SalesUpgradeable is
             "The ArticleFactory's address is not exist"
         );
         require(Pool != address(0), "The Pool's address is not exist");
+        
+        uint tokenCanTransfer = IERC20Upgradeable(TokenAddress).allowance(msg.sender, address(this));
+        require(tokenCanTransfer >= articles[_tokenId].price * _amount , "The balance of token is not enough");
 
         IERC20Upgradeable(TokenAddress).safeTransferFrom(
             msg.sender,
