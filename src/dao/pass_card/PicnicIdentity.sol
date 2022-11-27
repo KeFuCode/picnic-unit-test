@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts/utils/Strings.sol";
 
@@ -10,7 +10,6 @@ import "./AbstractERC1155Factory.sol";
  * @author kk-0xCreatorDao
  */
 contract PicnicIdentity is AbstractERC1155Factory {
-    
     event Minted(
         address indexed operator,
         address indexed to,

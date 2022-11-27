@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
 import "openzeppelin-contracts-upgradeable/utils/CountersUpgradeable.sol";
@@ -174,9 +174,15 @@ contract SalesUpgradeable is
             "The ArticleFactory's address is not exist"
         );
         require(Pool != address(0), "The Pool's address is not exist");
-        
-        uint tokenCanTransfer = IERC20Upgradeable(TokenAddress).allowance(msg.sender, address(this));
-        require(tokenCanTransfer >= articles[_tokenId].price * _amount , "The balance of token is not enough");
+
+        uint256 tokenCanTransfer = IERC20Upgradeable(TokenAddress).allowance(
+            msg.sender,
+            address(this)
+        );
+        require(
+            tokenCanTransfer >= articles[_tokenId].price * _amount,
+            "The balance of token is not enough"
+        );
 
         IERC20Upgradeable(TokenAddress).safeTransferFrom(
             msg.sender,
@@ -289,7 +295,7 @@ contract SalesUpgradeable is
 
     function _authorizeUpgrade(address newImplementation)
         internal
-        onlyOwner
         override
+        onlyOwner
     {}
 }

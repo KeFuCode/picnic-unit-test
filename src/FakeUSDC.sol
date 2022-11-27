@@ -1,4 +1,4 @@
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "solmate/tokens/ERC20.sol";
 
@@ -9,7 +9,7 @@ contract FakeUSDC is ERC20 {
         uint8 _decimals
     ) ERC20(_name, _symbol, _decimals) {}
 
-    function mint(address to, uint amount) external {
+    function mint(address to, uint256 amount) external {
         _mint(to, amount);
     }
 }

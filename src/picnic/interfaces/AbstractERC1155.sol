@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts/access/Ownable.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-abstract contract AbstractERC1155 is
-    ERC1155Supply,
-    ERC1155Burnable,
-    Ownable
-{
+abstract contract AbstractERC1155 is ERC1155Supply, ERC1155Burnable, Ownable {
     string internal name_;
     string internal symbol_;
 
@@ -35,8 +31,8 @@ abstract contract AbstractERC1155 is
         bytes memory data
     ) internal virtual override(ERC1155, ERC1155Supply) {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
-        for (uint i = 0; i < amounts.length; i++) {
-            uint amount = amounts[i];
+        for (uint256 i = 0; i < amounts.length; i++) {
+            uint256 amount = amounts[i];
             require(amount > 0, "Transfer amount is zero");
         }
     }

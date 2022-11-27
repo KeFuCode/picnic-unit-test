@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -163,13 +163,19 @@ contract ArticleFactoryUpgradeable is
     function uri(uint256 _id) public view override returns (string memory) {
         require(exists(_id), "URI: nonexistent token");
 
-        return string(abi.encodePacked(super.uri(_id), StringsUpgradeable.toString(_id)));
+        return
+            string(
+                abi.encodePacked(
+                    super.uri(_id),
+                    StringsUpgradeable.toString(_id)
+                )
+            );
     }
 
     function _authorizeUpgrade(address newImplementation)
         internal
-        onlyOwner
         override
+        onlyOwner
     {}
 
     function supportsInterface(bytes4 interfaceId)

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 interface ILP {
-    function sendLP(address _receiver, uint _amount) external;
+    function sendLP(address _receiver, uint256 _amount) external;
 
-    function burnLP(address _account, uint _amount) external;
+    function burnLP(address _account, uint256 _amount) external;
 
-    function balanceOf(address _account) external returns (uint);
+    function balanceOf(address _account) external returns (uint256);
 }

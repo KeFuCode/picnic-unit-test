@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -63,7 +63,7 @@ contract LPUpgradeable is
 
     function _authorizeUpgrade(address newImplementation)
         internal
-        onlyOwner
         override
+        onlyOwner
     {}
 }

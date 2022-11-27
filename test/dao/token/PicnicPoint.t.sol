@@ -1,5 +1,6 @@
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
+import "forge-std/console.sol";
 import "forge-std/Test.sol";
 import "../../../src/dao/token/PicnicPoint.sol";
 
@@ -8,6 +9,7 @@ contract PicnicPointTest is Test {
 
     function setUp() public {
         pp = new PicnicPoint("Picnic Point", "PP");
+        console.log(address(this));
     }
 
     function testOwner() public {
@@ -66,7 +68,7 @@ contract PicnicPointTest is Test {
         pp.approve(address(2), 1);
         vm.stopPrank();
         assertEqDecimal(pp.allowance(address(1), address(2)), 1, pp.decimals());
-        
+
         vm.startPrank(address(2));
         pp.transferFrom(address(1), address(3), 1);
         vm.stopPrank();

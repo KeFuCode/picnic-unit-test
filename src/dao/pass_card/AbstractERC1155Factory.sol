@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts/access/AccessControl.sol";
 import "openzeppelin-contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
@@ -16,7 +16,10 @@ abstract contract AbstractERC1155Factory is
     string internal name_;
     string internal symbol_;
 
-    function setURI(string memory baseURI) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function setURI(string memory baseURI)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _setURI(baseURI);
     }
 

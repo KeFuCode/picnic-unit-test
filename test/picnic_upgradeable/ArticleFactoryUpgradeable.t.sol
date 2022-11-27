@@ -1,4 +1,4 @@
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "forge-std/Test.sol";
 import "../../src/picnic_upgradeable/ArticleFactoryUpgradeable.sol";
@@ -21,7 +21,7 @@ contract ArticleFactoryUpgradeableTest is Test {
         af = new ArticleFactoryUpgradeable();
 
         proxy = new UUPSProxy(address(af), "");
-        
+
         wrappedProxyV1 = ArticleFactoryUpgradeable(address(proxy));
 
         wrappedProxyV1.initialize(

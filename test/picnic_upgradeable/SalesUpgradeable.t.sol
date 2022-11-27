@@ -1,4 +1,4 @@
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
@@ -81,12 +81,12 @@ contract SalesUpgradeableTest is Test {
             platBPS
         );
     }
-    
+
     function basePoolSetUp() public {
         pool = new PoolUpgradeable();
-        
+
         poolProxy = new UUPSProxy(address(pool), "");
-        
+
         poolWrappedProxyV1 = PoolUpgradeable(address(poolProxy));
         poolWrappedProxyV1.initialize(address(0), address(usdc));
     }
@@ -95,7 +95,7 @@ contract SalesUpgradeableTest is Test {
         lp = new LPUpgradeable();
 
         lpProxy = new UUPSProxy(address(lp), "");
-        
+
         lpWrappedProxyV1 = LPUpgradeable(address(lpProxy));
         lpWrappedProxyV1.initialize(
             address(salesProxy),
@@ -219,7 +219,13 @@ contract SalesUpgradeableTest is Test {
         assertTrue(verified);
 
         vm.prank(from);
-        salesWrappedProxyV1.createArticleWhiteList(uid, price, numMax, shareBPS, proof);
+        salesWrappedProxyV1.createArticleWhiteList(
+            uid,
+            price,
+            numMax,
+            shareBPS,
+            proof
+        );
     }
 
     function testPermit() public {

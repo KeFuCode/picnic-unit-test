@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.10;
 
 interface IArticleFactoryUpgradeable {
     function mint(
@@ -16,9 +16,9 @@ interface IArticleFactoryUpgradeable {
 
     function createArticle(
         bytes20 uid,
-        uint tokenId,
+        uint256 tokenId,
         address author,
-        uint price,
+        uint256 price,
         uint32 numMax,
         uint32 authorBPS,
         uint32 sharerBPS
