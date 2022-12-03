@@ -22,7 +22,7 @@
 > Picnic Deployed to: 
 
 - fake USDC
-- address: 0xF3E130e6b624aAe26dBb9b4C0B0C12819158179C  
+- **address: 0xF3E130e6b624aAe26dBb9b4C0B0C12819158179C**  
 - mint url: https://goerli.etherscan.io/address/0xf3e130e6b624aae26dbb9b4c0b0c12819158179c#writeContract
 
 > 
