@@ -1,6 +1,7 @@
 pragma solidity ^0.8.10;
 
 import "forge-std/Script.sol";
+import "forge-std/console.sol";
 
 import "../src/UUPSProxy.sol";
 
@@ -12,6 +13,8 @@ import "../src/picnic_upgradeable/PoolUpgradeable.sol";
 import "../src/picnic_upgradeable/LPUpgradeable.sol";
 
 contract DeployPicnicUpgradeable is Script {
+    bytes32 public constant SALES_ROLE = keccak256("SALES_ROLE");
+
     FakeUSDC public usdc;
 
     UUPSProxy afProxy;
@@ -39,10 +42,13 @@ contract DeployPicnicUpgradeable is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        baseUSDCSetUp();
+        // baseUSDCSetUp();
 
         baseArticleFactorySetUp();
         baseSalesSetUp();
+
+        afWrappedProxyV1.grantRole(SALES_ROLE, address(salesProxy));
+
         basePoolSetUp();
 
         salesWrappedProxyV1.setPool(address(poolProxy));
@@ -72,7 +78,7 @@ contract DeployPicnicUpgradeable is Script {
             "Article Factory",
             "AF",
             "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/",
-            address(this)
+            0xBAE14055EDEcb167e01Cf74890F1e4DeC51C70aa
         );
     }
 
@@ -108,7 +114,7 @@ contract DeployPicnicUpgradeable is Script {
         lpWrappedProxyV1.initialize(
             address(salesProxy),
             address(poolProxy),
-            address(this)
+            0xBAE14055EDEcb167e01Cf74890F1e4DeC51C70aa
         );
     }
 }
