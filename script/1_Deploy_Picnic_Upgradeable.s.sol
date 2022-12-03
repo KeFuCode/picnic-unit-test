@@ -43,6 +43,7 @@ contract DeployPicnicUpgradeable is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // baseUSDCSetUp();
+        usdc = FakeUSDC(0xF3E130e6b624aAe26dBb9b4C0B0C12819158179C);
 
         baseArticleFactorySetUp();
         baseSalesSetUp();
