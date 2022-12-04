@@ -30,6 +30,7 @@ contract PoolUpgradeable is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     function withdrawFunds(uint256 _amount) external {
+        require(LP != address(0), "Insufficient LP address");
         require(
             ILPUpgradeable(LP).balanceOf(msg.sender) >= _amount,
             "LP balance is not enough."
@@ -49,6 +50,7 @@ contract PoolUpgradeable is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // ============ Private Methods ============
 
     function _sendFunds(address _receiver, uint256 _amount) private {
+        require(TokenAddress != address(0), "Insufficient token address");
         require(
             IERC20Upgradeable(TokenAddress).balanceOf(address(this)) >= _amount,
             "Insufficient balance to send"
