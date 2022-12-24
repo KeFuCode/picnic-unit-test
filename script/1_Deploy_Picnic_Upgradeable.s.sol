@@ -43,7 +43,8 @@ contract DeployPicnicUpgradeable is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // baseUSDCSetUp();
-        usdc = FakeUSDC(0xF3E130e6b624aAe26dBb9b4C0B0C12819158179C);
+        // usdc = FakeUSDC(0x8c92ef4263d4c8d8E6C4AE7FeA3E59C215122F70);
+        usdc = FakeUSDC(0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174); // polygon usdc address
 
         baseArticleFactorySetUp();
         baseSalesSetUp();
@@ -79,7 +80,7 @@ contract DeployPicnicUpgradeable is Script {
             "Article Factory",
             "AF",
             "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/",
-            0xBAE14055EDEcb167e01Cf74890F1e4DeC51C70aa
+            0x75397574f510239621050b35147656a3587A9678
         );
     }
 
@@ -115,7 +116,7 @@ contract DeployPicnicUpgradeable is Script {
         lpWrappedProxyV1.initialize(
             address(salesProxy),
             address(poolProxy),
-            0xBAE14055EDEcb167e01Cf74890F1e4DeC51C70aa
+            0x75397574f510239621050b35147656a3587A9678
         );
     }
 }

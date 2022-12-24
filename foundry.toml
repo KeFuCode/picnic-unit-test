@@ -7,9 +7,9 @@ libs = ['lib']
 solc = '0.8.10'
 
 [rpc_endpoints]
-goerli = "${GOERLI_RPC_URL}"
+polygon = "${POLYGON_RPC_URL}"
 
 [etherscan]
-goerli = { key = "${ETHERSCAN_API_KEY}" }
+polygon = { key = "${ETHERSCAN_API_KEY}" }
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

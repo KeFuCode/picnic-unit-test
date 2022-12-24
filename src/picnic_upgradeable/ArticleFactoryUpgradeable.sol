@@ -134,32 +134,6 @@ contract ArticleFactoryUpgradeable is
         emit ArticleMinted(receiver, id, amount);
     }
 
-    function mintBatch(
-        address receiver,
-        uint256[] memory ids,
-        uint256[] memory amounts
-    ) public onlyRole(SALES_ROLE) {
-        for (uint256 i = 0; i < ids.length; i++) {
-            require(articles[ids[i]].numMax > 0, "Article does not exist");
-            require(
-                articles[ids[i]].numSold < articles[ids[i]].numMax,
-                "This Article is already sold out."
-            );
-            require(
-                articles[ids[i]].numSold + amounts[i] <=
-                    articles[ids[i]].numMax,
-                "Exceed the maximum number of articles"
-            );
-
-            // Increment the number of tokens sold for this Article.
-            articles[ids[i]].numSold += uint32(amounts[i]);
-        }
-
-        _mintBatch(receiver, ids, amounts, "");
-
-        emit ArticleMintedBatch(receiver, ids, amounts);
-    }
-
     function uri(uint256 _id) public view override returns (string memory) {
         require(exists(_id), "URI: nonexistent token");
 

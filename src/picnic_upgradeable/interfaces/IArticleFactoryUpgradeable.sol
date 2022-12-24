@@ -8,12 +8,6 @@ interface IArticleFactoryUpgradeable {
         uint256 amount
     ) external;
 
-    function mintBatch(
-        address receiver,
-        uint256[] memory ids,
-        uint256[] memory amounts
-    ) external;
-
     function createArticle(
         bytes20 uid,
         uint256 tokenId,

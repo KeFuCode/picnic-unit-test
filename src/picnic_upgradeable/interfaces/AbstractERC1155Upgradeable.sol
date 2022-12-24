@@ -3,12 +3,10 @@
 pragma solidity ^0.8.10;
 
 import "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "openzeppelin-contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
 import "openzeppelin-contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
 
 abstract contract AbstractERC1155Upgradeable is
     ERC1155SupplyUpgradeable,
-    ERC1155BurnableUpgradeable,
     OwnableUpgradeable
 {
     string internal name_;
@@ -37,7 +35,7 @@ abstract contract AbstractERC1155Upgradeable is
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) internal virtual override(ERC1155Upgradeable, ERC1155SupplyUpgradeable) {
+    ) internal virtual override(ERC1155SupplyUpgradeable) {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
         for (uint256 i = 0; i < amounts.length; i++) {
             uint256 amount = amounts[i];
