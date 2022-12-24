@@ -79,7 +79,6 @@ contract PicnicIdentity is AbstractERC1155Factory {
         emit MemberGetIdentities(msg.sender, to, ids, amounts);
     }
 
-    // executor role send many people single identity
     function sendMembersIdentity(
         address[] memory tos,
         uint256 id,
@@ -118,6 +117,18 @@ contract PicnicIdentity is AbstractERC1155Factory {
             _burn(tos[i], id, amount);
         }
         emit BurnMembersIdenetity(msg.sender, tos, id, amount);
+    }
+
+    function setExecutor(address executor, bool enabled) external {
+        if (enabled) {
+            grantRole(EXECUTOR_ROLE, executor);
+        } else {
+            revokeRole(EXECUTOR_ROLE, executor);
+        }
+    }
+
+    function isExecutor(address account) public view returns (bool) {
+        return hasRole(EXECUTOR_ROLE, account);
     }
 
     /**
