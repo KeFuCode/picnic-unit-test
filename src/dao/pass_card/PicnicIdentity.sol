@@ -10,19 +10,45 @@ import "./AbstractERC1155Factory.sol";
  * @author kk-0xCreatorDao
  */
 contract PicnicIdentity is AbstractERC1155Factory {
-    event Minted(
+    event MemberGetIdentity(
         address indexed operator,
         address indexed to,
-        uint256 indexed id,
+        uint256 id,
         uint256 amount
     );
-    event MintedBatch(
+    event MemberGetIdentities(
         address indexed operator,
         address indexed to,
         uint256[] ids,
         uint256[] amounts
     );
+    event MembersGetIdentity(
+        address indexed operator,
+        address[] indexed tos,
+        uint256 id,
+        uint256 amount
+    );
 
+    event BurnMemberIdenetity(
+        address indexed operator,
+        address indexed account,
+        uint256 id,
+        uint256 amount
+    );
+    event BurnMemberIdenetities(
+        address indexed operator,
+        address indexed account,
+        uint256[] ids,
+        uint256[] amounts
+    );
+    event BurnMembersIdenetity(
+        address indexed operator,
+        address[] indexed accounts,
+        uint256 id,
+        uint256 amount
+    );
+
+    // 0xCreator Identity, 0CI
     constructor(
         string memory name,
         string memory symbol,
@@ -35,38 +61,63 @@ contract PicnicIdentity is AbstractERC1155Factory {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
     }
 
-    function sendIdentity(
+    function sendMemberIdentity(
         address to,
         uint256 id,
         uint256 amount
     ) external onlyRole(EXECUTOR_ROLE) {
         _mint(to, id, amount, "");
-        emit Minted(msg.sender, to, id, amount);
+        emit MemberGetIdentity(msg.sender, to, id, amount);
     }
 
-    function sendIdentityBatch(
+    function sendMemberIdentities(
         address to,
         uint256[] memory ids,
         uint256[] memory amounts
     ) external onlyRole(EXECUTOR_ROLE) {
         _mintBatch(to, ids, amounts, "");
-        emit MintedBatch(msg.sender, to, ids, amounts);
+        emit MemberGetIdentities(msg.sender, to, ids, amounts);
+    }
+
+    // executor role send many people single identity
+    function sendMembersIdentity(
+        address[] memory tos,
+        uint256 id,
+        uint256 amount
+    ) external onlyRole(EXECUTOR_ROLE) {
+        for (uint256 i = 0; i < tos.length; i++) {
+            _mint(tos[i], id, amount, "");
+        }
+        emit MembersGetIdentity(msg.sender, tos, id, amount);
     }
 
     function burn(
         address account,
         uint256 id,
-        uint256 value
+        uint256 amount
     ) public virtual override onlyRole(DEFAULT_ADMIN_ROLE) {
-        _burn(account, id, value);
+        _burn(account, id, amount);
+        emit BurnMemberIdenetity(msg.sender, account, id, amount);
     }
 
     function burnBatch(
         address account,
         uint256[] memory ids,
-        uint256[] memory values
+        uint256[] memory amounts
     ) public virtual override onlyRole(DEFAULT_ADMIN_ROLE) {
-        _burnBatch(account, ids, values);
+        _burnBatch(account, ids, amounts);
+        emit BurnMemberIdenetities(msg.sender, account, ids, amounts);
+    }
+
+    function burnMembersIdentity(
+        address[] memory tos,
+        uint256 id,
+        uint256 amount
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        for (uint256 i = 0; i < tos.length; i++) {
+            _burn(tos[i], id, amount);
+        }
+        emit BurnMembersIdenetity(msg.sender, tos, id, amount);
     }
 
     /**
