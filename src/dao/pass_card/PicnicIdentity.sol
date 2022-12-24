@@ -6,7 +6,7 @@ import "openzeppelin-contracts/utils/Strings.sol";
 import "./AbstractERC1155Factory.sol";
 
 /*
- * @title ERC1155 token for Picnic cards
+ * @title ERC1155 token for Picnic Identity
  * @author kk-0xCreatorDao
  */
 contract PicnicIdentity is AbstractERC1155Factory {
