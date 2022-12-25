@@ -5,10 +5,10 @@ import "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-contracts/access/Ownable.sol";
 
 /*
- * @title No-transfer ERC20 token for Picnic Points
+ * @title No-transfer ERC20 token for Points
  * @author kk-0xCreatorDao
  */
-contract PicnicPoint is ERC20, Ownable {
+contract Point is ERC20, Ownable {
     event Minted(address indexed operator, address indexed to, uint256 amount);
 
     // 0xCreator Buidl Token, CBT

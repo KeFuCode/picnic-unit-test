@@ -6,10 +6,10 @@ import "openzeppelin-contracts/utils/Strings.sol";
 import "./AbstractERC1155Factory.sol";
 
 /*
- * @title ERC1155 token for Picnic Identity
+ * @title ERC1155 token for Identity
  * @author kk-0xCreatorDao
  */
-contract PicnicIdentity is AbstractERC1155Factory {
+contract Identity is AbstractERC1155Factory {
     event MemberGetIdentity(
         address indexed operator,
         address indexed to,

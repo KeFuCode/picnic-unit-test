@@ -2,13 +2,13 @@ pragma solidity ^0.8.10;
 
 import "forge-std/console.sol";
 import "forge-std/Test.sol";
-import "../../../src/dao/token/PicnicPoint.sol";
+import "../../../src/dao/token/Point.sol";
 
-contract PicnicPointTest is Test {
-    PicnicPoint private pp;
+contract PointTest is Test {
+    Point private pp;
 
     function setUp() public {
-        pp = new PicnicPoint("Picnic Point", "PP");
+        pp = new Point("Picnic Point", "PP");
         console.log(address(this));
     }
 
